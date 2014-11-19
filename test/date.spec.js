@@ -6,18 +6,6 @@ describe('uiDate', function() {
     element.datepicker('setDate', date);
     $.datepicker._selectDate(element);
   };
-  var onCloseDate;
-  onCloseDate = function(element, date) {
-    //element.datepicker('setDate', date);
-    //element.trigger("input");
-    //element.trigger("blur");
-    // console.log(element.datepicker.nodeName)
-    //element.datepicker('hide');
-    //element.datepicker('hide');
-    //console.log(element.datepicker.toString())
-    //$.datepicker._showDatepicker($(element.datepicker));
-    //$.datepicker._hideDatepicker(element);
-  };
   beforeEach(module('ui.date'));
   describe('simple use on input element', function() {
     it('should have a date picker attached', function() {
