@@ -10,4 +10,4 @@ files = [
   'test/*.spec.js'
 ];
 singleRun = true;
-browsers = [ 'Chrome' ];
+browsers = [ 'Firefox' ];

@@ -43,7 +43,7 @@ describe('uiDate', function() {
         element = $compile("<input ui-date='{showAnim: false}' ng-model='x'/>")($rootScope);
         $rootScope.$apply();
         $(document.body).append(element); // Need to add it to the document so that it can get focus
-        element.focus();
+        element.datepicker('show');
         expect(angular.element('#ui-datepicker-div').is(":visible")).toBeTruthy();
         selectDate(element, aDate);
         expect(angular.element('#ui-datepicker-div').is(":visible")).toBeFalsy();
@@ -155,7 +155,7 @@ describe('uiDate', function() {
         $rootScope.$apply();
         $(document.body).append(element);
         expect(watched).toBeFalsy();
-        element.focus();
+        element.datepicker('show');
         expect(watched).toBeTruthy();
         element.remove();
       });
@@ -432,7 +432,8 @@ describe('uiDateFormat', function() {
           }]);
 
           var aDateString = '2012 Friday, 12 October';
-          var _date = new Date('2012-10-12 00:00:00');
+          var _date = new Date('2012-10-12');
+          _date.setHours(0,0,0,0);
           var _date1 = new Date('2012-10-12');
           var _userOffset = _date.getTimezoneOffset()*60*1000; // user's offset time
           var _centralOffset = 6*60*60*1000; // 6 for central time - use whatever you need
