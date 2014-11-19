@@ -6,6 +6,18 @@ describe('uiDate', function() {
     element.datepicker('setDate', date);
     $.datepicker._selectDate(element);
   };
+  var onCloseDate;
+  onCloseDate = function(element, date) {
+    //element.datepicker('setDate', date);
+    //element.trigger("input");
+    //element.trigger("blur");
+    // console.log(element.datepicker.nodeName)
+    //element.datepicker('hide');
+    //element.datepicker('hide');
+    //console.log(element.datepicker.toString())
+    //$.datepicker._showDatepicker($(element.datepicker));
+    //$.datepicker._hideDatepicker(element);
+  };
   beforeEach(module('ui.date'));
   describe('simple use on input element', function() {
     it('should have a date picker attached', function() {
@@ -140,6 +152,43 @@ describe('uiDate', function() {
         $rootScope.$apply();
         selectDate(element, aDate);
         expect(watched).toBeTruthy();
+      });
+    });
+    it('should call the user beforeShow event before the datepicker is opened', function() {
+      inject(function($compile, $rootScope) {
+        var watched = false;
+        $rootScope.myOnBeforeShow= function() {
+          watched = true;
+        };
+
+        var aDate, element;
+        aDate = new Date(2010, 12, 1);
+        element = $compile("<input ui-date='{beforeShow: myOnBeforeShow}' ng-model='x'/>")($rootScope);
+        $rootScope.$apply();
+        $(document.body).append(element);
+        expect(watched).toBeFalsy();
+        element.focus();
+        expect(watched).toBeTruthy();
+        element.remove();
+      });
+    });
+    it('should call the user onClose event when the datepicker is closed', function() {
+      inject(function($compile, $rootScope) {
+        var watched = false;
+        $rootScope.myOnClose= function() {
+          watched = true;
+        };
+
+        var aDate, element;
+        aDate = new Date(2010, 12, 1);
+        element = $compile("<input ui-date='{onClose: myOnClose}' ng-model='x'/>")($rootScope);
+        $rootScope.$apply();
+        $(document.body).append(element);
+        expect(watched).toBeFalsy();
+        element.datepicker('show');
+        element.datepicker('hide');
+        expect(watched).toBeTruthy();
+        element.remove();
       });
     });
   });
@@ -395,8 +444,10 @@ describe('uiDateFormat', function() {
           }]);
 
           var aDateString = '2012 Friday, 12 October';
-          var expectedDate = new Date('2012-10-12');
-          expectedDate.setHours(0,0,0,0); // new Date uses GMT but jQuery formatter does not
+          var _date = new Date('2012-10-12');
+          var _userOffset = _date.getTimezoneOffset()*60*1000; // user's offset time
+          var _centralOffset = 6*60*60*1000; // 6 for central time - use whatever you need
+          expectedDate = new Date(_date.getTime() - _userOffset + _centralOffset); // redefine variable
 
           scope.x = aDateString;
           scope.$digest();
