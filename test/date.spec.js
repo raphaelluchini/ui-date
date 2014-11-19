@@ -414,7 +414,7 @@ describe('uiDateFormat', function() {
           }]);
 
           var aDate = new Date(2012,9,11);
-          var aISODateString = aDate.toISOString();      
+          var aISODateString = aDate.toISOString();
           scope.x = aISODateString;
           scope.$digest();
           expect(element.controller('ngModel').$viewValue).toEqual(aDate);
@@ -432,11 +432,11 @@ describe('uiDateFormat', function() {
           }]);
 
           var aDateString = '2012 Friday, 12 October';
-          var _date = new Date('2012-10-12');
+          var _date = new Date('2012-10-12 00:00:00');
+          var _date1 = new Date('2012-10-12');
           var _userOffset = _date.getTimezoneOffset()*60*1000; // user's offset time
           var _centralOffset = 6*60*60*1000; // 6 for central time - use whatever you need
-          expectedDate = new Date(_date.getTime() - _userOffset + _centralOffset); // redefine variable
-
+          var expectedDate = new Date(_date1.getTime() - _userOffset + _centralOffset); // redefine variable
           scope.x = aDateString;
           scope.$digest();
           expect(element.controller('ngModel').$viewValue).toEqual(expectedDate);
